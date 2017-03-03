@@ -7,7 +7,7 @@ namespace Tank_Game
 
 
 
-    class Bullet
+    public class Bullet
     {
         private Game1 game;
         public Rectangle bulletRect;
@@ -39,13 +39,15 @@ namespace Tank_Game
         }
         public void CheckCollision()
         {
-            if ((Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width >= 1))
+            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width >= 1))
             {
                 game.tank1.Die();
+                this.Die();
             }
-            if ((Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width >= 1))
+            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width >= 1))
             {
                 game.tank2.Die();
+                this.Die();
             }
         }
         public bool Collision()
