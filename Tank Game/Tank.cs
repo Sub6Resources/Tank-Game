@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Tank_Game
 {
-    class Tank
+    public class Tank
     {
         //data members
         public Vector2 location;

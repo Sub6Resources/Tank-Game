@@ -35,6 +35,18 @@ namespace Tank_Game
         {
             bulletRect.X += (int) speed.X;
             bulletRect.Y += (int) speed.Y;
+            CheckCollision();
+        }
+        public void CheckCollision()
+        {
+            if ((Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width >= 1))
+            {
+                game.tank1.Die();
+            }
+            if ((Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width >= 1))
+            {
+                game.tank2.Die();
+            }
         }
         public bool Collision()
         {

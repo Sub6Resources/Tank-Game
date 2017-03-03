@@ -12,8 +12,8 @@ namespace Tank_Game
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D whiteRectangle;
-        Tank tank1;
-        Tank tank2;
+        public Tank tank1;
+        public Tank tank2;
         Explosion tank1Explosion;
         Explosion tank2Explosion;
         Bullet[] bullets = new Bullet[2];
