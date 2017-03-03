@@ -36,8 +36,8 @@ namespace Tank_Game
         {
             whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
-            tank1 = new Tank(this, "GreenTank", Vector2.Zero, new Vector2(2, 2), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D);
-            tank2 = new Tank(this, "RedTank", new Vector2(100, 0), new Vector2(2, 2), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right);
+            tank1 = new Tank(this, "GreenTank", Vector2.Zero, new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
+            tank2 = new Tank(this, "RedTank", new Vector2(100, 0), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -91,7 +91,7 @@ namespace Tank_Game
             {
                 tank1Explosion = new Explosion(tank1.location, this, 1, whiteRectangle, Color.Green);
             }
-            if (state.IsKeyDown(Keys.RightShift))
+            if (state.IsKeyDown(Keys.Back))
             {
                 tank2Explosion = new Explosion(tank2.location, this, 2, whiteRectangle, Color.Red);
             }
