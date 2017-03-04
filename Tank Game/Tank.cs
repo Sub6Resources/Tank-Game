@@ -55,6 +55,7 @@ namespace Tank_Game
             keyDown = _keyDown;
             keyRight = _keyRight;
             keyBoost = _keyBoost;
+            keyReverse = _keyReverse;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -66,129 +67,115 @@ namespace Tank_Game
         }
         public void Move(KeyboardState state)
         {
-            bool D_down = state.IsKeyDown(keyRight);
-            bool S_down = state.IsKeyDown(keyDown);
-            bool A_down = state.IsKeyDown(keyLeft);
-            bool W_down = state.IsKeyDown(keyUp);
-            bool boost = state.IsKeyDown(keyBoost);
-            bool reverse = state.IsKeyDown(keyReverse);
+            //Declare the variables used to determine the direction and speed of the tank.
+            bool RIGHT_down = state.IsKeyDown(keyRight);
+            bool DOWN_down = state.IsKeyDown(keyDown);
+            bool LEFT_down = state.IsKeyDown(keyLeft);
+            bool UP_down = state.IsKeyDown(keyUp);
+            bool BOOST_down = state.IsKeyDown(keyBoost);
+            bool REVERSE_down = state.IsKeyDown(keyReverse);
 
-            bool A_plus = state.IsKeyDown(keyLeft) && state.IsKeyDown(keyUp);
-            bool A_plus2 = state.IsKeyDown(keyLeft) && state.IsKeyDown(keyDown);
-            bool W_plus = state.IsKeyDown(keyUp) && state.IsKeyDown(keyLeft);
-            bool S_plus = state.IsKeyDown(keyDown) && state.IsKeyDown(keyLeft);
-            bool W_plus2 = state.IsKeyDown(keyUp) && state.IsKeyDown(keyRight);
-            bool S_plus2 = state.IsKeyDown(keyDown) && state.IsKeyDown(keyRight);
-            bool D_plus = state.IsKeyDown(keyRight) && state.IsKeyDown(keyUp);
-            bool D_plus2 = state.IsKeyDown(keyRight) && state.IsKeyDown(keyDown);
 
-            if (D_down)
+            if (UP_down)
             {
-                MoveRight(boost, reverse, D_plus, D_plus2);
-                Rotate(RIGHT);
-            }
-            if (A_down)
-            {
-                MoveLeft(boost, reverse, A_plus, A_plus2);
-                Rotate(LEFT);
-            }
-            if (W_down)
-            {
-                MoveUp(boost, reverse, W_plus, W_plus2);
                 Rotate(UP);
-                if (D_down && !boost)
+                MoveUp(BOOST_down, REVERSE_down);
+                if (RIGHT_down && !BOOST_down)
                 {
                     Rotate(UP_RIGHT);
+                    MoveRight(BOOST_down, REVERSE_down);
                 }
-                if (A_down && !boost)
+                if (LEFT_down && !BOOST_down)
                 {
                     Rotate(UP_LEFT);
+                    MoveLeft(BOOST_down, REVERSE_down);
                 }
             }
-            if (S_down)
+            else if (DOWN_down)
             {
-                MoveDown(boost, reverse, S_plus, S_plus2);
                 Rotate(DOWN);
-                if (D_down && !boost)
+                MoveDown(BOOST_down, REVERSE_down);
+                if (RIGHT_down && !BOOST_down)
                 {
                     Rotate(DOWN_RIGHT);
+                    MoveRight(BOOST_down, REVERSE_down);
                 }
-                if (A_down && !boost)
+                if (LEFT_down && !BOOST_down)
                 {
                     Rotate(DOWN_LEFT);
+                    MoveLeft(BOOST_down, REVERSE_down);
                 }
             }
+            else if (RIGHT_down)
+            {
+                Rotate(RIGHT);
+                MoveRight(BOOST_down, REVERSE_down);
+            }
+            else if (LEFT_down)
+            {
+                Rotate(LEFT);
+                MoveLeft(BOOST_down, REVERSE_down);
+            }
+            
         }
-        public void MoveLeft(bool isBoostPressed, bool isReversedPressed, bool IsA_plusPressed, bool IsA_plus2Pressed)
+        public void MoveLeft(bool isBoostPressed, bool isReversedPressed)
         {
-            if (isBoostPressed && !IsA_plusPressed && !IsA_plus2Pressed)
+            if (isBoostPressed)
             {
                 this.location.X -= (2) + this.speed.X;
             }
-            else if (!isBoostPressed)
+            else if (isReversedPressed)
             {
-                if (isReversedPressed)
-                {
-                    this.location.X += this.speed.Y;
-                }
-                else
-                {
-                    this.location.X -= this.speed.X;
-                }
+                this.location.X += this.speed.Y;
+            } 
+            else
+            {
+                this.location.X -= this.speed.X;
             }
         }
-        public void MoveRight(bool isBoostPressed, bool isReversedPressed, bool IsD_plusPressed, bool IsD_plus2Pressed)
+        public void MoveRight(bool isBoostPressed, bool isReversedPressed)
         {
-            if (isBoostPressed && !IsD_plusPressed && !IsD_plus2Pressed)
+            if (isBoostPressed)
             {
                 this.location.X += (2) + this.speed.X;
             }
-            else if (!isBoostPressed)
+            else if (isReversedPressed)
             {
-                if (isReversedPressed)
-                {
-                    this.location.X -= this.speed.X;
-                }
-                else
-                {
-                    this.location.X += this.speed.X;
-                }
+                this.location.X -= this.speed.X;
+            }
+            else
+            {
+                this.location.X += this.speed.X;
             }
         }
-        public void MoveUp(bool isBoostPressed, bool isReversedPressed, bool IsW_plusPressed, bool IsW_plus2Pressed)
+        public void MoveUp(bool isBoostPressed, bool isReversedPressed)
         {
-            if (isBoostPressed && !IsW_plusPressed && !IsW_plus2Pressed)
+            if (isBoostPressed)
             {
                 this.location.Y -= (2) + this.speed.Y;
             }
-            else if (!isBoostPressed)
+            else if (isReversedPressed)
             {
-                if (isReversedPressed)
-                {
-                    this.location.Y += this.speed.Y;
-                }
-                else
-                {
-                    this.location.Y -= this.speed.Y;
-                }
+                this.location.Y += this.speed.Y;
+            }
+            else
+            {
+                this.location.Y -= this.speed.Y;
             }
         }
-        public void MoveDown(bool isBoostPressed, bool isReversedPressed, bool IsS_plusPressed, bool IsS_plus2Pressed)
+        public void MoveDown(bool isBoostPressed, bool isReversedPressed)
         {
-            if (isBoostPressed && !IsS_plusPressed && !IsS_plus2Pressed)
+            if (isBoostPressed)
             {
                 this.location.Y += (2) + this.speed.Y;
             }
-            else if (!isBoostPressed)
+            else if (isReversedPressed)
             {
-                if (isReversedPressed)
-                {
-                    this.location.Y -= this.speed.Y;
-                }
-                else
-                {
-                    this.location.Y += this.speed.Y;
-                }
+                this.location.Y -= this.speed.Y;
+            }
+            else
+            {
+                this.location.Y += this.speed.Y;
             }
         }
         public void Rotate(float angle)
