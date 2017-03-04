@@ -8,6 +8,7 @@ namespace Tank_Game
     {
         //data members
         public Vector2 location;
+        public Vector2 startingLocation;
         public Vector2 speed { get; set; }
         public float rotation { get; set; }
         public Texture2D tankTexture { get; set; }
@@ -22,6 +23,7 @@ namespace Tank_Game
         public Keys keyRight;
         public Keys keyBoost;
         public Keys keyReverse;
+        public bool alive;
         private static float UP = -MathHelper.PiOver2;
         private static float UP_RIGHT = -MathHelper.PiOver4;
         private static float RIGHT = 0;
@@ -43,6 +45,7 @@ namespace Tank_Game
         {
             tankTexture = _game.Content.Load<Texture2D>(_tankSpriteName);
             location = _location;
+            startingLocation = _location;
             speed = _speed;
             rotation = _rotation;
             origin = new Vector2(this.tankTexture.Width / 2f, this.tankTexture.Height / 2f);
@@ -56,14 +59,22 @@ namespace Tank_Game
             keyRight = _keyRight;
             keyBoost = _keyBoost;
             keyReverse = _keyReverse;
+            alive = true;
+            lives = 3;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(tankTexture, location, null, null, origin, rotation, null, null);
+            if (alive)
+            {
+                spriteBatch.Draw(tankTexture, location, null, null, origin, rotation, null, null);
+            }
         }
         public void Update(KeyboardState state)
         {
-            Move(state);
+            if (alive)
+            {
+                Move(state);
+            }
         }
         public void Move(KeyboardState state)
         {
@@ -184,45 +195,65 @@ namespace Tank_Game
         }
         public Bullet Fire()
         {
-            //TODO: Fire method
-            if(rotation == UP)
+            if (alive)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Black, player, UP, whiteRectangle);
-            } else if(rotation== UP_RIGHT)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, -10), Color.Black, player, UP_RIGHT, whiteRectangle);
-            } else if(rotation == RIGHT)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(20, 0), Color.Black, player, RIGHT, whiteRectangle);
-            } else if(rotation ==DOWN_RIGHT)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Black, player, DOWN_RIGHT, whiteRectangle);
-            } else if(rotation == DOWN)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(0, 20), Color.Black, player, DOWN, whiteRectangle);
-            } else if(rotation == DOWN_LEFT)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-10, 10), Color.Black, player, DOWN_LEFT, whiteRectangle);
-            } else if(rotation == LEFT)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-20, 0), Color.Black, player, LEFT, whiteRectangle);
-            } else if(rotation == UP_LEFT)
-            {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-10, -10), Color.Black, player, UP, whiteRectangle);
-            } else
-            {
-                return null;
+                if (rotation == UP)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Black, player, UP, whiteRectangle);
+                }
+                else if (rotation == UP_RIGHT)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(10, -10), Color.Black, player, UP_RIGHT, whiteRectangle);
+                }
+                else if (rotation == RIGHT)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X-5, (int)location.Y-2, 5, 5), new Vector2(20, 0), Color.Black, player, RIGHT, whiteRectangle);
+                }
+                else if (rotation == DOWN_RIGHT)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Black, player, DOWN_RIGHT, whiteRectangle);
+                }
+                else if (rotation == DOWN)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-5, 5, 5), new Vector2(0, 20), Color.Black, player, DOWN, whiteRectangle);
+                }
+                else if (rotation == DOWN_LEFT)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(-10, 10), Color.Black, player, DOWN_LEFT, whiteRectangle);
+                }
+                else if (rotation == LEFT)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y-2, 5, 5), new Vector2(-20, 0), Color.Black, player, LEFT, whiteRectangle);
+                }
+                else if (rotation == UP_LEFT)
+                {
+                    return new Bullet(game, new Rectangle((int)location.X-3, (int)location.Y-3, 5, 5), new Vector2(-10, -10), Color.Black, player, UP, whiteRectangle);
+                }
+                else
+                {
+                    return null;
+                }
             }
+            return null;
             
+        }
+        public void Hit()
+        {
+            lives -= 1;
+            if(lives < 0)
+            {
+                Die();
+            }
         }
         public void Die()
         {
-            //TODO: Die method
-            Respawn(Vector2.Zero);
+            alive = false;
         }
-        public void Respawn(Vector2 location)
+        public void Respawn(Vector2 _location)
         {
-            //TODO: Respawn method
+            location = _location;
+            lives = 3;
+            alive = true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Tank_Game
 {
@@ -16,7 +17,16 @@ namespace Tank_Game
         public Tank tank2;
         Explosion tank1Explosion;
         Explosion tank2Explosion;
-        Bullet[] bullets = new Bullet[2];
+        List<Bullet> bullets = new List<Bullet>();
+        private float tank1FireDelay = 0f;
+        private float tank2FireDelay = 0f;
+        private const float FIRE_DELAY = 0.5f;
+        private float tank1ExplosionDelay = 0f;
+        private float tank2ExplosionDelay = 0f;
+        private const float EXPLOSION_DELAY = 5f;
+        private float tank1TimeToBackAlive = 2f;
+        private float tank2TimeToBackAlive = 2f;
+        private const float BACK_ALIVE_DELAY = 2f;
 
 
 
@@ -36,8 +46,8 @@ namespace Tank_Game
         {
             whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
-            tank1 = new Tank(this, "GreenTank", Vector2.Zero, new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
-            tank2 = new Tank(this, "RedTank", new Vector2(100, 0), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
+            tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
+            tank2 = new Tank(this, "RedTank", new Vector2(600, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -74,26 +84,59 @@ namespace Tank_Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            //Update delays
+            float timer = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
+            tank1FireDelay -= timer;
+            tank2FireDelay -= timer;
+            tank1ExplosionDelay -= timer;
+            tank2ExplosionDelay -= timer;
+
+            //if tanks are dead, decrease their time until they respawn
+            if (!tank1.alive)
+            {
+                tank1TimeToBackAlive -= timer;
+                if (tank1TimeToBackAlive < 0)
+                {
+                    tank1.Respawn(tank1.startingLocation);
+                    tank1TimeToBackAlive = BACK_ALIVE_DELAY;
+                }
+            }
+            if (!tank2.alive)
+            {
+                tank2TimeToBackAlive -= timer;
+                if (tank2TimeToBackAlive < 0)
+                {
+                    tank2.Respawn(tank2.startingLocation);
+                    tank2TimeToBackAlive = BACK_ALIVE_DELAY;
+                }
+            }
+
             // TODO: Add your update logic here
             KeyboardState state = Keyboard.GetState();
 
             tank1.Update(state);
             tank2.Update(state);
-            if(state.IsKeyDown(Keys.Space))
+            if(state.IsKeyDown(Keys.Space) && tank1FireDelay <= 0)
             {
-                bullets[0] = tank1.Fire();
+                tank1FireDelay = FIRE_DELAY;
+                bullets.Add(tank1.Fire());
             }
-            if(state.IsKeyDown(Keys.RightControl))
+            if(state.IsKeyDown(Keys.RightControl) && tank2FireDelay <= 0)
             {
-                bullets[1] = tank2.Fire();
+                tank2FireDelay = FIRE_DELAY;
+                bullets.Add(tank2.Fire());
             }
-            if (state.IsKeyDown(Keys.E))
+            if (state.IsKeyDown(Keys.E) && tank1ExplosionDelay <= 0)
             {
+                tank1ExplosionDelay = EXPLOSION_DELAY;
                 tank1Explosion = new Explosion(tank1.location, this, 1, whiteRectangle, Color.Green);
+                tank1.Die();
             }
-            if (state.IsKeyDown(Keys.Back))
+            if (state.IsKeyDown(Keys.Back) && tank2ExplosionDelay <= 0)
             {
+                tank2ExplosionDelay = EXPLOSION_DELAY;
                 tank2Explosion = new Explosion(tank2.location, this, 2, whiteRectangle, Color.Red);
+                tank2.Die();
             }
             foreach (Bullet bullet in bullets)
             {

@@ -17,10 +17,9 @@ namespace Tank_Game
             Random randy = new Random();
             for(int i=0; i<MAX_PROJECTILES; ++i)
             {
-                var speed = new Vector2();
-                var a = randy.Next(-20, 20);
-                var b = randy.Next(-20, 20);
-
+                Vector2 speed = new Vector2();
+                int a = randy.Next(-20, 20);
+                int b = randy.Next(-20, 20);
                 if (a == 0 || a ==1 || a == 2)
                 {
                     a = 3;
@@ -30,17 +29,12 @@ namespace Tank_Game
                     b = 3;
                 }
                 speed = new Vector2(a, b);
-
-                var r = randy.Next(0, 456);
-                //Thread.Sleep(0.01);
-                var g = randy.Next(0, 456);
-                // Thread.Sleep(1);
-                var c = randy.Next(0, 456);
+                int r = randy.Next(0, 456);
+                int g = randy.Next(0, 456);
+                int c = randy.Next(0, 456);
                 color = Color.FromNonPremultiplied(255, r, g, c);
-
+                //Create a new shrapnel bullet
                 shrapnel[i] = new Bullet(game, new Rectangle(new Point((int)location.X, (int)location.Y), new Point(randy.Next(1, 20), randy.Next(1, 20))), speed, color, player, randy.Next(-((int)MathHelper.Pi), (int)MathHelper.Pi), whiteRectangle);
-
-
             }
         }
         public void Draw(SpriteBatch spriteBatch) {
