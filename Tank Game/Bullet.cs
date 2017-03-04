@@ -16,6 +16,7 @@ namespace Tank_Game
         public int player { get; set; }
         public float rotation { get; set; }
         public Texture2D rectangleTexture;
+        public bool alive { get; set; }
         public Bullet() { }
         public Bullet(Game1 _game, Rectangle _bulletRect, Vector2 _speed, Color _color, int _player, float _rotation, Texture2D _rectangleTexture)
         {
@@ -26,37 +27,42 @@ namespace Tank_Game
             player = _player;
             rotation = _rotation;
             rectangleTexture = _rectangleTexture;
+            alive = true;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(rectangleTexture, bulletRect, color);
+            if (alive)
+            {
+                spriteBatch.Draw(rectangleTexture, bulletRect, color);
+            }
         }
         public void Update()
         {
-            bulletRect.X += (int) speed.X;
-            bulletRect.Y += (int) speed.Y;
-            CheckCollision();
+            if (alive)
+            {
+                bulletRect.X += (int)speed.X;
+                bulletRect.Y += (int)speed.Y;
+                CheckCollision();
+            }
         }
         public void CheckCollision()
         {
-            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width >= 1))
+            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width !=0))
             {
-                game.tank1.Die();
+                game.tank1.Hit();
                 this.Die();
             }
-            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width >= 1))
+            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width != 0))
             {
-                game.tank2.Die();
+                game.tank2.Hit();
                 this.Die();
             }
-        }
-        public bool Collision()
-        {
-            return false;
         }
         public void Die()
         {
-
-        }
+            alive = false;
+            speed = Vector2.Zero;
+            color = Color.Transparent;
+    }
     }
 }
