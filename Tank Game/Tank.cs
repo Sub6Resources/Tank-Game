@@ -200,28 +200,28 @@ namespace Tank_Game
             //TODO: Fire method
             if(rotation == UP)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(0, -20), Color.White, player, UP, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Black, player, UP, whiteRectangle);
             } else if(rotation== UP_RIGHT)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, -10), Color.White, player, UP_RIGHT, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, -10), Color.Black, player, UP_RIGHT, whiteRectangle);
             } else if(rotation == RIGHT)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(20, 0), Color.White, player, RIGHT, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(20, 0), Color.Black, player, RIGHT, whiteRectangle);
             } else if(rotation ==DOWN_RIGHT)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.White, player, DOWN_RIGHT, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Black, player, DOWN_RIGHT, whiteRectangle);
             } else if(rotation == DOWN)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(0, 20), Color.White, player, DOWN, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(0, 20), Color.Black, player, DOWN, whiteRectangle);
             } else if(rotation == DOWN_LEFT)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-10, 10), Color.White, player, DOWN_LEFT, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-10, 10), Color.Black, player, DOWN_LEFT, whiteRectangle);
             } else if(rotation == LEFT)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-20, 0), Color.White, player, LEFT, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-20, 0), Color.Black, player, LEFT, whiteRectangle);
             } else if(rotation == UP_LEFT)
             {
-                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-10, -10), Color.White, player, UP, whiteRectangle);
+                return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(-10, -10), Color.Black, player, UP, whiteRectangle);
             } else
             {
                 return null;

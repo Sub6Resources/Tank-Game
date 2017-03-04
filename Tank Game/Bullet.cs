@@ -7,7 +7,7 @@ namespace Tank_Game
 
 
 
-    class Bullet
+    public class Bullet
     {
         private Game1 game;
         public Rectangle bulletRect;
