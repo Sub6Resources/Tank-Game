@@ -25,6 +25,7 @@ namespace Tank_Game
         public Keys keyBoost;
         public Keys keyReverse;
         public bool alive;
+        public Rectangle tankRect;
         ParticleSpray deathParticles;
         ParticleSpray respawnParticles;
         private static float UP = -MathHelper.PiOver2;
@@ -66,6 +67,7 @@ namespace Tank_Game
             lives = 3;
             respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
             deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
+            tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -81,6 +83,33 @@ namespace Tank_Game
             if (alive)
             {
                 Move(state);
+                tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
+                foreach (Tile[] tiles in game.map.map)
+                {
+                    foreach (Tile tile in tiles)
+                    {
+                        if ((tile.isColliding(tankRect).depth > 0)) //If collision is not an empty collision
+                        {
+                            Collision collision = tile.isColliding(tankRect);
+                            switch(collision.side)
+                            {
+                                case Collision.Side.TOP:
+                                    location.Y += collision.depth;
+                                    break;
+                                case Collision.Side.BOTTOM:
+                                    location.Y -= collision.depth;
+                                    break;
+                                case Collision.Side.LEFT:
+                                    location.X += collision.depth;
+                                    break;
+                                case Collision.Side.RIGHT:
+                                    location.X -= collision.depth;
+                                    break;
+                                
+                            }
+                        }
+                    }
+                }
             }
             respawnParticles.Update(gameTime);
             deathParticles.Update(gameTime);
