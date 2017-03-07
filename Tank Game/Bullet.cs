@@ -17,6 +17,8 @@ namespace Tank_Game
         public float rotation { get; set; }
         public Texture2D rectangleTexture;
         public bool alive { get; set; }
+        public int pointsOnHit { get; set; }
+        public int pointsOnKill { get; set; }
         public Bullet() { }
         public Bullet(Game1 _game, Rectangle _bulletRect, Vector2 _speed, Color _color, int _player, float _rotation, Texture2D _rectangleTexture)
         {
@@ -28,6 +30,8 @@ namespace Tank_Game
             rotation = _rotation;
             rectangleTexture = _rectangleTexture;
             alive = true;
+            pointsOnHit = 50;
+            pointsOnKill = 200;
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -47,14 +51,24 @@ namespace Tank_Game
         }
         public void CheckCollision()
         {
-            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width !=0))
+            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width !=0) && game.tank1.alive)
             {
                 game.tank1.Hit();
+                game.scoreManager.addScore(0, pointsOnHit);
+                if (!game.tank1.alive)
+                {
+                    game.scoreManager.addScore(0, pointsOnKill);
+                }
                 this.Die();
             }
-            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width != 0))
+            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width != 0) && game.tank2.alive)
             {
                 game.tank2.Hit();
+                game.scoreManager.addScore(1, pointsOnHit);
+                if(!game.tank2.alive)
+                {
+                    game.scoreManager.addScore(1, pointsOnKill);
+                }
                 this.Die();
             }
         }

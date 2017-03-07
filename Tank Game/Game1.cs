@@ -18,6 +18,7 @@ namespace Tank_Game
         Explosion tank1Explosion;
         Explosion tank2Explosion;
         List<Bullet> bullets = new List<Bullet>();
+        public Score scoreManager;
         private float tank1FireDelay = 0f;
         private float tank2FireDelay = 0f;
         private const float FIRE_DELAY = 0.5f;
@@ -48,6 +49,7 @@ namespace Tank_Game
             whiteRectangle.SetData(new[] { Color.White });
             tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
             tank2 = new Tank(this, "RedTank", new Vector2(600, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
+            scoreManager = new Score(this, 2);
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -168,6 +170,7 @@ namespace Tank_Game
             spriteBatch.Begin();
             tank1.Draw(spriteBatch);
             tank2.Draw(spriteBatch);
+            scoreManager.Draw(spriteBatch);
             foreach(Bullet bullet in bullets)
             {
                 if (bullet != null)
