@@ -114,8 +114,8 @@ namespace Tank_Game
             // TODO: Add your update logic here
             KeyboardState state = Keyboard.GetState();
 
-            tank1.Update(state);
-            tank2.Update(state);
+            tank1.Update(state, gameTime);
+            tank2.Update(state, gameTime);
             if(state.IsKeyDown(Keys.Space) && tank1FireDelay <= 0)
             {
                 tank1FireDelay = FIRE_DELAY;
