@@ -5,7 +5,7 @@ using System;
 
 namespace Tank_Game
 {
-    class Explosion
+    public class Explosion
     {
         public static int MAX_PROJECTILES = 200;
         private Color color;
