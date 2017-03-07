@@ -24,6 +24,8 @@ namespace Tank_Game
         public Keys keyBoost;
         public Keys keyReverse;
         public bool alive;
+        ParticleSpray deathParticles;
+        ParticleSpray respawnParticles;
         private static float UP = -MathHelper.PiOver2;
         private static float UP_RIGHT = -MathHelper.PiOver4;
         private static float RIGHT = 0;
@@ -61,6 +63,8 @@ namespace Tank_Game
             keyReverse = _keyReverse;
             alive = true;
             lives = 3;
+            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
+            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -68,13 +72,19 @@ namespace Tank_Game
             {
                 spriteBatch.Draw(tankTexture, location, null, null, origin, rotation, null, null);
             }
+            respawnParticles.Draw(spriteBatch);
+            deathParticles.Draw(spriteBatch);
         }
-        public void Update(KeyboardState state)
+        public void Update(KeyboardState state, GameTime gameTime)
         {
             if (alive)
             {
                 Move(state);
             }
+            respawnParticles.Update(gameTime);
+            deathParticles.Update(gameTime);
+
+
         }
         public void Move(KeyboardState state)
         {
@@ -247,12 +257,14 @@ namespace Tank_Game
         }
         public void Die()
         {
+            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 2);
             alive = false;
         }
         public void Respawn(Vector2 _location)
         {
             location = _location;
             lives = 3;
+            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 2);
             alive = true;
         }
     }
