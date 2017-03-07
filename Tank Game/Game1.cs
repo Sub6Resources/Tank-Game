@@ -19,6 +19,9 @@ namespace Tank_Game
         Explosion tank2Explosion;
         List<Bullet> bullets = new List<Bullet>();
         public Score scoreManager;
+        public List<Landmine> landmines = new List<Landmine>();
+        Rectangle debugRect;
+        Rectangle tank2DebugRect;
         private float tank1FireDelay = 0f;
         private float tank2FireDelay = 0f;
         private const float FIRE_DELAY = 0.5f;
@@ -28,6 +31,9 @@ namespace Tank_Game
         private float tank1TimeToBackAlive = 2f;
         private float tank2TimeToBackAlive = 2f;
         private const float BACK_ALIVE_DELAY = 2f;
+        private float tank1MineDelay = 0f;
+        private float tank2MineDelay = 0f;
+        private const float MINE_DELAY = 20f;
 
 
 
@@ -50,6 +56,8 @@ namespace Tank_Game
             tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
             tank2 = new Tank(this, "RedTank", new Vector2(600, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
             scoreManager = new Score(this, 2);
+            debugRect = new Rectangle();
+            tank2DebugRect = new Rectangle();
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -92,6 +100,8 @@ namespace Tank_Game
             tank2FireDelay -= timer;
             tank1ExplosionDelay -= timer;
             tank2ExplosionDelay -= timer;
+            tank1MineDelay -= timer;
+            tank2MineDelay -= timer;
 
             //if tanks are dead, decrease their time until they respawn
             if (!tank1.alive)
@@ -118,6 +128,12 @@ namespace Tank_Game
 
             tank1.Update(state, gameTime);
             tank2.Update(state, gameTime);
+            debugRect = new Rectangle((int)tank1.location.X-(tank1.tankTexture.Width/2), (int)tank1.location.Y-(tank1.tankTexture.Height/2), tank1.tankTexture.Width, tank1.tankTexture.Height);
+            tank2DebugRect = new Rectangle((int)tank2.location.X - (tank2.tankTexture.Width / 2), (int)tank2.location.Y - (tank2.tankTexture.Height / 2), tank2.tankTexture.Width, tank2.tankTexture.Height);
+            foreach (Landmine lm in landmines)
+            {
+                lm.Update();
+            }
             if(state.IsKeyDown(Keys.Space) && tank1FireDelay <= 0)
             {
                 tank1FireDelay = FIRE_DELAY;
@@ -139,6 +155,16 @@ namespace Tank_Game
                 tank2ExplosionDelay = EXPLOSION_DELAY;
                 tank2Explosion = new Explosion(tank2.location, this, 2, whiteRectangle, Color.Red);
                 tank2.Die();
+            }
+            if(state.IsKeyDown(Keys.V) && tank1MineDelay <= 0)
+            {
+                tank1MineDelay = MINE_DELAY;
+                landmines.Add(new Landmine(this, new Rectangle((int)tank1.location.X, (int)tank1.location.Y, 20, 20), Vector2.Zero, Color.Orange, 1, 0, whiteRectangle));
+            }
+            if(state.IsKeyDown(Keys.M) && tank2MineDelay <= 0)
+            {
+                tank2MineDelay = MINE_DELAY;
+                landmines.Add(new Landmine(this, new Rectangle((int)tank2.location.X, (int)tank2.location.Y, 20, 20), Vector2.Zero, Color.Orange, 2, 0, whiteRectangle));
             }
             foreach (Bullet bullet in bullets)
             {
@@ -168,10 +194,18 @@ namespace Tank_Game
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            //DEBUG DRAWS (COMMENT OUT TO TURN OFF DEBUG MODE)
+                //spriteBatch.Draw(whiteRectangle, debugRect, Color.Pink); //Tank1 DebugRect
+                //spriteBatch.Draw(whiteRectangle, tank2DebugRect, Color.Pink); //Tank2 DebugRect
             tank1.Draw(spriteBatch);
             tank2.Draw(spriteBatch);
+            
             scoreManager.Draw(spriteBatch);
-            foreach(Bullet bullet in bullets)
+            foreach (Landmine lm in landmines)
+            {
+                lm.Draw(spriteBatch);
+            }
+            foreach (Bullet bullet in bullets)
             {
                 if (bullet != null)
                 {

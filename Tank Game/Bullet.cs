@@ -9,7 +9,7 @@ namespace Tank_Game
 
     public class Bullet
     {
-        private Game1 game;
+        public Game1 game;
         public Rectangle bulletRect;
         public Vector2 speed;
         public Color color { get; set; }
@@ -33,14 +33,14 @@ namespace Tank_Game
             pointsOnHit = 50;
             pointsOnKill = 200;
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (alive)
             {
                 spriteBatch.Draw(rectangleTexture, bulletRect, color);
             }
         }
-        public void Update()
+        public virtual void Update()
         {
             if (alive)
             {
@@ -49,30 +49,30 @@ namespace Tank_Game
                 CheckCollision();
             }
         }
-        public void CheckCollision()
+        public virtual void CheckCollision()
         {
-            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X, (int)game.tank1.location.Y, game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width !=0) && game.tank1.alive)
+            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X - (game.tank1.tankTexture.Width / 2), (int)game.tank1.location.Y - (game.tank1.tankTexture.Height / 2), game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width !=0) && game.tank1.alive)
             {
                 game.tank1.Hit();
-                game.scoreManager.addScore(0, pointsOnHit);
-                if (!game.tank1.alive)
-                {
-                    game.scoreManager.addScore(0, pointsOnKill);
-                }
-                this.Die();
-            }
-            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X, (int)game.tank2.location.Y, game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width != 0) && game.tank2.alive)
-            {
-                game.tank2.Hit();
                 game.scoreManager.addScore(1, pointsOnHit);
-                if(!game.tank2.alive)
+                if (!game.tank1.alive)
                 {
                     game.scoreManager.addScore(1, pointsOnKill);
                 }
                 this.Die();
             }
+            if (player == 1 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank2.location.X - (game.tank2.tankTexture.Width / 2), (int)game.tank2.location.Y - (game.tank2.tankTexture.Height / 2), game.tank2.tankTexture.Width, game.tank2.tankTexture.Height)).Width != 0) && game.tank2.alive)
+            {
+                game.tank2.Hit();
+                game.scoreManager.addScore(0, pointsOnHit);
+                if(!game.tank2.alive)
+                {
+                    game.scoreManager.addScore(0, pointsOnKill);
+                }
+                this.Die();
+            }
         }
-        public void Die()
+        public virtual void Die()
         {
             alive = false;
             speed = Vector2.Zero;
