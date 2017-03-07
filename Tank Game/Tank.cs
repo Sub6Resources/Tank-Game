@@ -257,15 +257,21 @@ namespace Tank_Game
         }
         public void Die()
         {
-            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 2);
-            alive = false;
+            if (alive)
+            {
+                deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 2);
+                alive = false;
+            }
         }
         public void Respawn(Vector2 _location)
         {
-            location = _location;
-            lives = 3;
-            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 2);
-            alive = true;
+            if (!alive)
+            {
+                location = _location;
+                lives = 3;
+                respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 2);
+                alive = true;
+            }
         }
     }
 }
