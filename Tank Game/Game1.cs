@@ -10,6 +10,7 @@ namespace Tank_Game
     /// </summary>
     public class Game1 : Game
     {
+        public Map map;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D whiteRectangle;
@@ -40,6 +41,7 @@ namespace Tank_Game
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
         }
 
@@ -51,10 +53,19 @@ namespace Tank_Game
         /// </summary>
         protected override void Initialize()
         {
+            
             whiteRectangle = new Texture2D(GraphicsDevice, 1, 1);
+            //UNCOMMENT NEXT THREE COMMENTS FOR FULLSCREEN
+            //graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width - GraphicsDevice.DisplayMode.Width % 48; //Makes the window size a divisor of 48 so the tiles fit more cleanly.
+            //graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height - GraphicsDevice.DisplayMode.Height % 48;
+            graphics.PreferredBackBufferWidth = 48 * 20;
+            graphics.PreferredBackBufferHeight = 48 * 16;
+            //graphics.IsFullScreen = true;
+            graphics.ApplyChanges();
+            map = new Map(this, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             whiteRectangle.SetData(new[] { Color.White });
             tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
-            tank2 = new Tank(this, "RedTank", new Vector2(600, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
+            tank2 = new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
             scoreManager = new Score(this, 2);
             debugRect = new Rectangle();
             tank2DebugRect = new Rectangle();
@@ -93,7 +104,7 @@ namespace Tank_Game
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            map.Update(gameTime);
             //Update delays
             float timer = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000;
             tank1FireDelay -= timer;
@@ -191,20 +202,22 @@ namespace Tank_Game
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.WhiteSmoke);
-
+            
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            map.Draw(spriteBatch);
             //DEBUG DRAWS (COMMENT OUT TO TURN OFF DEBUG MODE)
-                //spriteBatch.Draw(whiteRectangle, debugRect, Color.Pink); //Tank1 DebugRect
-                //spriteBatch.Draw(whiteRectangle, tank2DebugRect, Color.Pink); //Tank2 DebugRect
-            tank1.Draw(spriteBatch);
-            tank2.Draw(spriteBatch);
-            
-            scoreManager.Draw(spriteBatch);
+            //spriteBatch.Draw(whiteRectangle, debugRect, Color.Pink); //Tank1 DebugRect
+            //spriteBatch.Draw(whiteRectangle, tank2DebugRect, Color.Pink); //Tank2 DebugRect
             foreach (Landmine lm in landmines)
             {
                 lm.Draw(spriteBatch);
             }
+            tank1.Draw(spriteBatch);
+            tank2.Draw(spriteBatch);
+            
+            scoreManager.Draw(spriteBatch);
+            
             foreach (Bullet bullet in bullets)
             {
                 if (bullet != null)

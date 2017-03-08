@@ -51,7 +51,7 @@ namespace Tank_Game
         }
         public virtual void CheckCollision()
         {
-            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X - (game.tank1.tankTexture.Width / 2), (int)game.tank1.location.Y - (game.tank1.tankTexture.Height / 2), game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width !=0) && game.tank1.alive)
+            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X - (game.tank1.tankTexture.Width / 2), (int)game.tank1.location.Y - (game.tank1.tankTexture.Height / 2), game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width != 0) && game.tank1.alive)
             {
                 game.tank1.Hit();
                 game.scoreManager.addScore(1, pointsOnHit);
@@ -65,11 +65,22 @@ namespace Tank_Game
             {
                 game.tank2.Hit();
                 game.scoreManager.addScore(0, pointsOnHit);
-                if(!game.tank2.alive)
+                if (!game.tank2.alive)
                 {
                     game.scoreManager.addScore(0, pointsOnKill);
                 }
                 this.Die();
+            }
+            foreach (Tile[] tiles in game.map.map)
+            {
+                foreach (Tile tile in tiles)
+                {
+                    if((tile.isColliding(bulletRect).depth > 0)) //If collision is not an empty collision
+                    {
+                        Collision collision = tile.isColliding(bulletRect);
+                        this.Die();
+                    }
+                }
             }
         }
         public virtual void Die()
