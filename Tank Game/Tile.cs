@@ -47,7 +47,7 @@ namespace Tank_Game
                 if (intersect.Width > 0 || intersect.Height > 0)
                 {
                     
-                    if (possibleCollisionRect.Top < collisionRect.Bottom && Math.Abs(intersect.Width) > Math.Abs(intersect.Height))
+                    if (possibleCollisionRect.Top < collisionRect.Bottom && Math.Abs(intersect.Width) > Math.Abs(intersect.Height) && possibleCollisionRect.Y > collisionRect.Y)
                     {
                         float depth = intersect.Height;
                         return new Collision(Collision.Side.TOP, depth);
@@ -57,15 +57,15 @@ namespace Tank_Game
                         float depth = intersect.Height;
                         return new Collision(Collision.Side.BOTTOM, depth);
                     }
-                    if (possibleCollisionRect.Left > collisionRect.Left + collisionRect.Width && possibleCollisionRect.Left < collisionRect.Right && Math.Abs(intersect.Width) < Math.Abs(intersect.Height))
+                    if (possibleCollisionRect.Left < collisionRect.Right && Math.Abs(intersect.Width) < Math.Abs(intersect.Height) && possibleCollisionRect.Right > collisionRect.Right)
                     {
                         float depth = intersect.Width;
-                        return new Collision(Collision.Side.RIGHT, depth);
+                        return new Collision(Collision.Side.LEFT, depth);
                     }
                     if (possibleCollisionRect.Right > collisionRect.Right - collisionRect.Width && possibleCollisionRect.Right > collisionRect.Left && Math.Abs(intersect.Width) < Math.Abs(intersect.Height))
                     {
                         float depth = intersect.Width;
-                        return new Collision(Collision.Side.LEFT, depth);
+                        return new Collision(Collision.Side.RIGHT, depth);
                     }
                 }
             }
