@@ -5,7 +5,7 @@ using System;
 
 namespace Tank_Game
 {
-    class ParticleSpray
+    public class ParticleSpray
     {
         public static int MAX_PARTICLES = 15;
         private Color color;

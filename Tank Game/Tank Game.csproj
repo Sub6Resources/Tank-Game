@@ -40,8 +40,10 @@
   <ItemGroup>
     <Compile Include="Bullet.cs" />
     <Compile Include="Collision.cs" />
+    <Compile Include="EnemyTank.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="KamikazeTank.cs" />
     <Compile Include="Landmine.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Particle.cs" />
