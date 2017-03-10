@@ -28,6 +28,7 @@ namespace Tank_Game
         public Rectangle tankRect;
         ParticleSpray deathParticles;
         ParticleSpray respawnParticles;
+        ParticleSpray hitParticles;
         private static float UP = -MathHelper.PiOver2;
         private static float UP_RIGHT = -MathHelper.PiOver4;
         private static float RIGHT = 0;
@@ -65,8 +66,9 @@ namespace Tank_Game
             keyReverse = _keyReverse;
             alive = true;
             lives = 3;
-            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
-            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
+            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
+            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 0);
+            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -77,6 +79,7 @@ namespace Tank_Game
             }
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
+            hitParticles.Draw(spriteBatch);
         }
         public void Update(KeyboardState state, GameTime gameTime)
         {
@@ -113,6 +116,7 @@ namespace Tank_Game
             }
             respawnParticles.Update(gameTime);
             deathParticles.Update(gameTime);
+            hitParticles.Update(gameTime);
 
 
         }
@@ -125,9 +129,55 @@ namespace Tank_Game
             bool UP_down = state.IsKeyDown(keyUp);
             bool BOOST_down = state.IsKeyDown(keyBoost);
             bool REVERSE_down = state.IsKeyDown(keyReverse);
+            bool isPressedLeft = false;
+            bool isPressedRight = false;
+            bool isDrifting = false;
 
+            //isPressed keyUp statements
+            if (!RIGHT_down)
+            {
+                isPressedRight = false;
+            }
 
-            if (UP_down)
+            if (!LEFT_down)
+            {
+                isPressedLeft = false;
+            }
+
+            if (!LEFT_down || !RIGHT_down)
+            {
+                isDrifting = false;
+            }
+
+            //Corner drifting statements
+            if (isPressedRight && UP_down && LEFT_down)
+            {
+                isDrifting = true;
+                Rotate(UP_RIGHT);
+                MoveUp(BOOST_down, REVERSE_down);
+
+            } else if (isPressedRight && DOWN_down && LEFT_down)
+            {
+                isDrifting = true;
+                Rotate(DOWN_RIGHT);
+                MoveDown(BOOST_down, REVERSE_down);
+            }
+
+            if (isPressedLeft && UP_down)
+            {
+                isDrifting = true;
+                Rotate(UP_LEFT);
+                MoveUp(BOOST_down, REVERSE_down && RIGHT_down);
+
+            } else if (isPressedLeft && DOWN_down)
+            {
+                isDrifting = true;
+                Rotate(DOWN_LEFT);
+                MoveDown(BOOST_down, REVERSE_down && RIGHT_down);
+            }
+
+            //Basic movement statements
+            if (UP_down && !isDrifting)
             {
                 Rotate(UP);
                 MoveUp(BOOST_down, REVERSE_down);
@@ -142,7 +192,7 @@ namespace Tank_Game
                     MoveLeft(BOOST_down, REVERSE_down);
                 }
             }
-            else if (DOWN_down)
+            else if (DOWN_down && !isDrifting)
             {
                 Rotate(DOWN);
                 MoveDown(BOOST_down, REVERSE_down);
@@ -157,15 +207,23 @@ namespace Tank_Game
                     MoveLeft(BOOST_down, REVERSE_down);
                 }
             }
-            else if (RIGHT_down)
+            else if (RIGHT_down && !isDrifting)
             {
                 Rotate(RIGHT);
                 MoveRight(BOOST_down, REVERSE_down);
+                    if (!isPressedLeft)
+                    {
+                        isPressedRight = true;
+                    }
             }
-            else if (LEFT_down)
+            else if (LEFT_down && !isDrifting)
             {
                 Rotate(LEFT);
                 MoveLeft(BOOST_down, REVERSE_down);
+                if (!isPressedRight)
+                {
+                        isPressedLeft = true;
+                }
             }
             
         }
@@ -283,13 +341,15 @@ namespace Tank_Game
             if(lives < 0)
             {
                 Die();
+            } else {
+                hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 2, 5);
             }
         }
         public void Die()
         {
             if (alive)
             {
-                deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 2);
+                deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 2);
                 alive = false;
             }
         }
