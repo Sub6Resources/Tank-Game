@@ -27,13 +27,11 @@ namespace Tank_Game
             if(player == 1)
             {
                 theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, 2, this.rectangleTexture, Color.Orange);
-                game.tank2.Die();
                 game.scoreManager.addScore(0, 1000);
             }
             if (player == 2)
             {
                 theExplosion = new Explosion(new Vector2(this.bulletRect.X, this.bulletRect.Y), this.game, 1, this.rectangleTexture, Color.Orange);
-                game.tank1.Die();
                 game.scoreManager.addScore(1, 1000);
             }
         }
@@ -56,7 +54,14 @@ namespace Tank_Game
         }
         public override void CheckCollision()
         {
-            if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X - (game.tank1.tankTexture.Width / 2), (int)game.tank1.location.Y - (game.tank1.tankTexture.Height / 2), game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width != 0) && game.tank1.alive)
+			foreach (EnemyTank et in game.enemyTanks)
+			{
+				if ((Rectangle.Intersect(bulletRect, new Rectangle((int)et.location.X - (et.tankTexture.Width / 2), (int)et.location.Y - (et.tankTexture.Height / 2), et.tankTexture.Width, et.tankTexture.Height)).Width != 0) && et.alive)
+				{
+					this.Die();
+				}
+			}
+			if (player == 2 && (Rectangle.Intersect(bulletRect, new Rectangle((int)game.tank1.location.X - (game.tank1.tankTexture.Width / 2), (int)game.tank1.location.Y - (game.tank1.tankTexture.Height / 2), game.tank1.tankTexture.Width, game.tank1.tankTexture.Height)).Width != 0) && game.tank1.alive)
             {
                 this.Die();
             }

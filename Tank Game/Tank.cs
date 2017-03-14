@@ -10,11 +10,11 @@ namespace Tank_Game
         //data members
         public Vector2 location;
         public Vector2 startingLocation;
-        public Vector2 speed { get; set; }
+		public Vector2 speed;
         public float rotation { get; set; }
         public Texture2D tankTexture { get; set; }
         public Vector2 origin { get; set; }
-        private Game1 game { get; set; }
+        public Game1 game { get; set; }
         public int player { get; set; }
         public int lives { get; set; }
         public float scale { get; set; }
@@ -26,18 +26,20 @@ namespace Tank_Game
         public Keys keyReverse;
         public bool alive;
         public Rectangle tankRect;
-        ParticleSpray deathParticles;
-        ParticleSpray respawnParticles;
-        ParticleSpray hitParticles;
-        private static float UP = -MathHelper.PiOver2;
-        private static float UP_RIGHT = -MathHelper.PiOver4;
-        private static float RIGHT = 0;
-        private static float DOWN_RIGHT = MathHelper.PiOver4;
-        private static float DOWN = MathHelper.PiOver2;
-        private static float DOWN_LEFT = MathHelper.Pi - MathHelper.PiOver4;
-        private static float LEFT = MathHelper.Pi;
-        private static float UP_LEFT = -(MathHelper.Pi - MathHelper.PiOver4);
-        Texture2D whiteRectangle;
+        public ParticleSpray deathParticles;
+        public ParticleSpray respawnParticles;
+        public const float UP = -MathHelper.PiOver2;
+        public const float UP_RIGHT = -MathHelper.PiOver4;
+        public const float RIGHT = 0;
+        public const float DOWN_RIGHT = MathHelper.PiOver4;
+        public const float DOWN = MathHelper.PiOver2;
+        public const float DOWN_LEFT = MathHelper.Pi - MathHelper.PiOver4;
+        public const float LEFT = MathHelper.Pi;
+        public const float UP_LEFT = -(MathHelper.Pi - MathHelper.PiOver4);
+		public bool colliding = false;
+        public Texture2D whiteRectangle;
+		public bool enemy = false;
+		public Explosion explosion;
 
         //generic constructor
         public Tank()
@@ -71,28 +73,38 @@ namespace Tank_Game
             hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (alive)
             {
                 spriteBatch.Draw(tankTexture, location, null, null, origin, rotation, null, null);
-            }
+            } else
+			{
+                if(explosion != null)
+                {
+                    explosion.Draw(spriteBatch);
+                }
+				
+			}
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
             hitParticles.Draw(spriteBatch);
         }
-        public void Update(KeyboardState state, GameTime gameTime)
+        public virtual void Update(KeyboardState state, GameTime gameTime)
         {
             if (alive)
             {
                 Move(state);
                 tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
+				//Check collisions
+				colliding = false;
                 foreach (Tile[] tiles in game.map.map)
                 {
                     foreach (Tile tile in tiles)
                     {
                         if ((tile.isColliding(tankRect).depth > 0)) //If collision is not an empty collision
                         {
+							colliding = true;
                             Collision collision = tile.isColliding(tankRect);
                             switch(collision.side)
                             {
@@ -113,14 +125,20 @@ namespace Tank_Game
                         }
                     }
                 }
-            }
+            } else //if not alive
+			{
+                if (explosion != null)
+                {
+                    explosion.Update();
+                }
+			}
             respawnParticles.Update(gameTime);
             deathParticles.Update(gameTime);
             hitParticles.Update(gameTime);
 
 
         }
-        public void Move(KeyboardState state)
+        public virtual void Move(KeyboardState state)
         {
             //Declare the variables used to determine the direction and speed of the tank.
             bool RIGHT_down = state.IsKeyDown(keyRight);
@@ -297,35 +315,35 @@ namespace Tank_Game
             {
                 if (rotation == UP)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Black, player, UP, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Red, player, UP, whiteRectangle);
                 }
                 else if (rotation == UP_RIGHT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(10, -10), Color.Black, player, UP_RIGHT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(10, -10), Color.Red, player, UP_RIGHT, whiteRectangle);
                 }
                 else if (rotation == RIGHT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-5, (int)location.Y-2, 5, 5), new Vector2(20, 0), Color.Black, player, RIGHT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-5, (int)location.Y-2, 5, 5), new Vector2(20, 0), Color.Red, player, RIGHT, whiteRectangle);
                 }
                 else if (rotation == DOWN_RIGHT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Black, player, DOWN_RIGHT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Red, player, DOWN_RIGHT, whiteRectangle);
                 }
                 else if (rotation == DOWN)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-5, 5, 5), new Vector2(0, 20), Color.Black, player, DOWN, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-5, 5, 5), new Vector2(0, 20), Color.Red, player, DOWN, whiteRectangle);
                 }
                 else if (rotation == DOWN_LEFT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(-10, 10), Color.Black, player, DOWN_LEFT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(-10, 10), Color.Red, player, DOWN_LEFT, whiteRectangle);
                 }
                 else if (rotation == LEFT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y-2, 5, 5), new Vector2(-20, 0), Color.Black, player, LEFT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y-2, 5, 5), new Vector2(-20, 0), Color.Red, player, LEFT, whiteRectangle);
                 }
                 else if (rotation == UP_LEFT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-3, (int)location.Y-3, 5, 5), new Vector2(-10, -10), Color.Black, player, UP, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-3, (int)location.Y-3, 5, 5), new Vector2(-10, -10), Color.Red, player, UP, whiteRectangle);
                 }
                 else
                 {
@@ -338,7 +356,7 @@ namespace Tank_Game
         public void Hit()
         {
             lives -= 1;
-            if(lives < 0)
+            if(lives <  1)
             {
                 Die();
             } else {
@@ -363,5 +381,13 @@ namespace Tank_Game
                 alive = true;
             }
         }
+		public void Explode()
+		{
+			if(alive)
+			{
+				explosion = new Explosion(location, game, player, whiteRectangle, Color.Firebrick);
+				Die();
+			}
+		}
     }
 }

@@ -16,6 +16,7 @@ namespace Tank_Game
         Texture2D whiteRectangle;
         public Tank tank1;
         public Tank tank2;
+		public List<EnemyTank> enemyTanks = new List<EnemyTank>();
         Explosion tank1Explosion;
         Explosion tank2Explosion;
         List<Bullet> bullets = new List<Bullet>();
@@ -35,6 +36,7 @@ namespace Tank_Game
         private float tank1MineDelay = 0f;
         private float tank2MineDelay = 0f;
         private const float MINE_DELAY = 20f;
+        Texture2D background;
 
 
 
@@ -64,9 +66,12 @@ namespace Tank_Game
             graphics.ApplyChanges();
             map = new Map(this, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             whiteRectangle.SetData(new[] { Color.White });
+            background = Content.Load<Texture2D>("Stars");
             tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
             tank2 = new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
-            scoreManager = new Score(this, 2);
+			enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 10, 1f, whiteRectangle));
+			enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(1, 1), 0, 10, 1f, whiteRectangle));
+            scoreManager = new Score(this, 10);
             debugRect = new Rectangle();
             tank2DebugRect = new Rectangle();
             // TODO: Add your initialization logic here
@@ -139,6 +144,10 @@ namespace Tank_Game
 
             tank1.Update(state, gameTime);
             tank2.Update(state, gameTime);
+			foreach (EnemyTank et in enemyTanks)
+			{
+				et.Update(state, gameTime);
+			}
             debugRect = new Rectangle((int)tank1.location.X-(tank1.tankTexture.Width/2), (int)tank1.location.Y-(tank1.tankTexture.Height/2), tank1.tankTexture.Width, tank1.tankTexture.Height);
             tank2DebugRect = new Rectangle((int)tank2.location.X - (tank2.tankTexture.Width / 2), (int)tank2.location.Y - (tank2.tankTexture.Height / 2), tank2.tankTexture.Width, tank2.tankTexture.Height);
             foreach (Landmine lm in landmines)
@@ -205,6 +214,7 @@ namespace Tank_Game
             
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, map.screenWidth, map.screenHeight), Color.White);
             map.Draw(spriteBatch);
             //DEBUG DRAWS (COMMENT OUT TO TURN OFF DEBUG MODE)
             //spriteBatch.Draw(whiteRectangle, debugRect, Color.Pink); //Tank1 DebugRect
@@ -215,6 +225,10 @@ namespace Tank_Game
             }
             tank1.Draw(spriteBatch);
             tank2.Draw(spriteBatch);
+			foreach (EnemyTank et in enemyTanks)
+			{
+				et.Draw(spriteBatch);
+			}
             
             scoreManager.Draw(spriteBatch);
             
