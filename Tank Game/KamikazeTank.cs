@@ -11,6 +11,7 @@ namespace Tank_Game
 	{
 		private const int AI_TOLERANCE = 3;
         Vector2 initSpeed = new Vector2();
+        bool charging;
 
 		public KamikazeTank() { }
 		public KamikazeTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, float _scale, Texture2D _whiteRectangle)
@@ -44,30 +45,47 @@ namespace Tank_Game
                 {
                     Explode();
                 }
+                charging = true;
 			}
 			//If X = X of enemy tank and Y > Y of enemy tank, go up.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y > game.tank1.location.Y)
 			{
-                speed += new Vector2(2, 2);
+                if (lives <= 1)
+                {
+                    speed += new Vector2(2, 2);
+                }
 				targetDirection = UP;
+                charging = true;
 			}
 			//If X = X of enemy tank and Y < Y of enemy tank, go down.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y < game.tank1.location.Y)
 			{
-                speed += new Vector2(2, 2);
+                if (lives <= 1)
+                {
+                    speed += new Vector2(2, 2);
+                }
                 targetDirection = DOWN;
+                charging = true;
 			}
 			//If Y = Y of enemy tank and X > X of enemy tank, go left.
 			if((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X > game.tank1.location.X)
 			{
-                speed += new Vector2(2, 2);
+                if (lives <= 1)
+                {
+                    speed += new Vector2(2, 2);
+                }
                 targetDirection = LEFT;
+                charging = true;
 			}
 			//If Y = Y of enemy tank and X < X of enemy tank, go right.
 			if ((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X < game.tank1.location.X)
 			{
-                speed += new Vector2(2, 2);
+                if (lives <= 1)
+                {
+                    speed += new Vector2(2, 2);
+                }
                 targetDirection = RIGHT;
+                charging = true;
 			}
 		}
 	}

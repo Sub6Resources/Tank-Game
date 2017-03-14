@@ -28,6 +28,7 @@ namespace Tank_Game
         public Rectangle tankRect;
         public ParticleSpray deathParticles;
         public ParticleSpray respawnParticles;
+        public ParticleSpray hitParticles;
         public const float UP = -MathHelper.PiOver2;
         public const float UP_RIGHT = -MathHelper.PiOver4;
         public const float RIGHT = 0;
@@ -68,9 +69,9 @@ namespace Tank_Game
             keyReverse = _keyReverse;
             alive = true;
             lives = 3;
-            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
-            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 0);
-            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 0);
+            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.LightGray, 0);
+            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.White, 0);
+            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.White, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -88,7 +89,10 @@ namespace Tank_Game
 			}
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
-            hitParticles.Draw(spriteBatch);
+            if (hitParticles != null)
+            {
+                hitParticles.Draw(spriteBatch);
+            }
         }
         public virtual void Update(KeyboardState state, GameTime gameTime)
         {
@@ -134,7 +138,10 @@ namespace Tank_Game
 			}
             respawnParticles.Update(gameTime);
             deathParticles.Update(gameTime);
-            hitParticles.Update(gameTime);
+            if (hitParticles != null)
+            {
+                hitParticles.Update(gameTime);
+            }
 
 
         }
