@@ -79,7 +79,11 @@ namespace Tank_Game
                 spriteBatch.Draw(tankTexture, location, null, null, origin, rotation, null, null);
             } else
 			{
-				explosion.Draw(spriteBatch);
+                if(explosion != null)
+                {
+                    explosion.Draw(spriteBatch);
+                }
+				
 			}
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
@@ -121,7 +125,10 @@ namespace Tank_Game
                 }
             } else //if not alive
 			{
-				explosion.Update();
+                if (explosion != null)
+                {
+                    explosion.Update();
+                }
 			}
             respawnParticles.Update(gameTime);
             deathParticles.Update(gameTime);
@@ -251,35 +258,35 @@ namespace Tank_Game
             {
                 if (rotation == UP)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Black, player, UP, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Red, player, UP, whiteRectangle);
                 }
                 else if (rotation == UP_RIGHT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(10, -10), Color.Black, player, UP_RIGHT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(10, -10), Color.Red, player, UP_RIGHT, whiteRectangle);
                 }
                 else if (rotation == RIGHT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-5, (int)location.Y-2, 5, 5), new Vector2(20, 0), Color.Black, player, RIGHT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-5, (int)location.Y-2, 5, 5), new Vector2(20, 0), Color.Red, player, RIGHT, whiteRectangle);
                 }
                 else if (rotation == DOWN_RIGHT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Black, player, DOWN_RIGHT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y, 5, 5), new Vector2(10, 10), Color.Red, player, DOWN_RIGHT, whiteRectangle);
                 }
                 else if (rotation == DOWN)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-5, 5, 5), new Vector2(0, 20), Color.Black, player, DOWN, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-5, 5, 5), new Vector2(0, 20), Color.Red, player, DOWN, whiteRectangle);
                 }
                 else if (rotation == DOWN_LEFT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(-10, 10), Color.Black, player, DOWN_LEFT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y-2, 5, 5), new Vector2(-10, 10), Color.Red, player, DOWN_LEFT, whiteRectangle);
                 }
                 else if (rotation == LEFT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y-2, 5, 5), new Vector2(-20, 0), Color.Black, player, LEFT, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X, (int)location.Y-2, 5, 5), new Vector2(-20, 0), Color.Red, player, LEFT, whiteRectangle);
                 }
                 else if (rotation == UP_LEFT)
                 {
-                    return new Bullet(game, new Rectangle((int)location.X-3, (int)location.Y-3, 5, 5), new Vector2(-10, -10), Color.Black, player, UP, whiteRectangle);
+                    return new Bullet(game, new Rectangle((int)location.X-3, (int)location.Y-3, 5, 5), new Vector2(-10, -10), Color.Red, player, UP, whiteRectangle);
                 }
                 else
                 {

@@ -36,6 +36,7 @@ namespace Tank_Game
         private float tank1MineDelay = 0f;
         private float tank2MineDelay = 0f;
         private const float MINE_DELAY = 20f;
+        Texture2D background;
 
 
 
@@ -65,6 +66,7 @@ namespace Tank_Game
             graphics.ApplyChanges();
             map = new Map(this, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
             whiteRectangle.SetData(new[] { Color.White });
+            background = Content.Load<Texture2D>("Stars");
             tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
             tank2 = new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
 			enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 10, 1f, whiteRectangle));
@@ -212,6 +214,7 @@ namespace Tank_Game
             
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, map.screenWidth, map.screenHeight), Color.White);
             map.Draw(spriteBatch);
             //DEBUG DRAWS (COMMENT OUT TO TURN OFF DEBUG MODE)
             //spriteBatch.Draw(whiteRectangle, debugRect, Color.Pink); //Tank1 DebugRect

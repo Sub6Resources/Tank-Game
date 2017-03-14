@@ -10,6 +10,7 @@ namespace Tank_Game
 	public class KamikazeTank : EnemyTank
 	{
 		private const int AI_TOLERANCE = 3;
+        Vector2 initSpeed = new Vector2();
 
 		public KamikazeTank() { }
 		public KamikazeTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, float _scale, Texture2D _whiteRectangle)
@@ -18,6 +19,7 @@ namespace Tank_Game
 			location = _location;
 			startingLocation = _location;
 			speed = _speed;
+            initSpeed = speed;
 			rotation = _rotation;
 			origin = new Vector2(this.tankTexture.Width / 2f, this.tankTexture.Height / 2f);
 			game = _game;
@@ -34,30 +36,38 @@ namespace Tank_Game
 		public override void Move(KeyboardState state)
 		{
 			base.Move(state);
-			//If very close to enemy tank, explode 
-			if((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && (location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE))
+            speed = initSpeed;
+            //If very close to enemy tank, explode 
+            if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && (location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE))
 			{
-				Explode();
+                if (lives <= 1)
+                {
+                    Explode();
+                }
 			}
 			//If X = X of enemy tank and Y > Y of enemy tank, go up.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y > game.tank1.location.Y)
 			{
+                speed += new Vector2(2, 2);
 				targetDirection = UP;
 			}
 			//If X = X of enemy tank and Y < Y of enemy tank, go down.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y < game.tank1.location.Y)
 			{
-				targetDirection = DOWN;
+                speed += new Vector2(2, 2);
+                targetDirection = DOWN;
 			}
 			//If Y = Y of enemy tank and X > X of enemy tank, go left.
 			if((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X > game.tank1.location.X)
 			{
-				targetDirection = LEFT;
+                speed += new Vector2(2, 2);
+                targetDirection = LEFT;
 			}
 			//If Y = Y of enemy tank and X < X of enemy tank, go right.
 			if ((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X < game.tank1.location.X)
 			{
-				targetDirection = RIGHT;
+                speed += new Vector2(2, 2);
+                targetDirection = RIGHT;
 			}
 		}
 	}
