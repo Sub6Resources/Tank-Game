@@ -28,6 +28,7 @@ namespace Tank_Game
         public Rectangle tankRect;
         public ParticleSpray deathParticles;
         public ParticleSpray respawnParticles;
+        public ParticleSpray hitParticles;
         public const float UP = -MathHelper.PiOver2;
         public const float UP_RIGHT = -MathHelper.PiOver4;
         public const float RIGHT = 0;
