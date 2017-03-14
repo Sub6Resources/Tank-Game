@@ -145,7 +145,7 @@ namespace Tank_Game
             {
                 lm.Update();
             }
-            if(state.IsKeyDown(Keys.Space) && tank1FireDelay <= 0)
+            if(state.IsKeyDown(Keys.LeftControl) && tank1FireDelay <= 0)
             {
                 tank1FireDelay = FIRE_DELAY;
                 bullets.Add(tank1.Fire());
