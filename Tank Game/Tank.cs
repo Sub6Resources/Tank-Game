@@ -28,6 +28,7 @@ namespace Tank_Game
         public Rectangle tankRect;
         public ParticleSpray deathParticles;
         public ParticleSpray respawnParticles;
+        public ParticleSpray hitParticles;
         public const float UP = -MathHelper.PiOver2;
         public const float UP_RIGHT = -MathHelper.PiOver4;
         public const float RIGHT = 0;
@@ -70,6 +71,7 @@ namespace Tank_Game
             lives = 3;
             respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
             deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
+            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -87,6 +89,7 @@ namespace Tank_Game
 			}
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
+            hitParticles.Draw(spriteBatch);
         }
         public virtual void Update(KeyboardState state, GameTime gameTime)
         {
@@ -132,6 +135,7 @@ namespace Tank_Game
 			}
             respawnParticles.Update(gameTime);
             deathParticles.Update(gameTime);
+            hitParticles.Update(gameTime);
 
 
         }
