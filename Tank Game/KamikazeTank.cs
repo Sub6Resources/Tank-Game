@@ -11,11 +11,8 @@ namespace Tank_Game
 	{
 		private const int AI_TOLERANCE = 3;
         Vector2 initSpeed = new Vector2();
-<<<<<<< HEAD
-        bool charging;
-=======
         public bool kamiCharge;
->>>>>>> refs/remotes/origin/master
+        private bool chargeSoundPlayed = false;
 
 		public KamikazeTank() { }
 		public KamikazeTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, float _scale, Texture2D _whiteRectangle)
@@ -122,23 +119,10 @@ namespace Tank_Game
             if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && (location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE))
 			{
                     Explode();
-<<<<<<< HEAD
-                }
-                charging = true;
-=======
->>>>>>> refs/remotes/origin/master
 			}
 			//If X = X of enemy tank and Y > Y of enemy tank, go up.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y > game.tank1.location.Y)
 			{
-<<<<<<< HEAD
-                if (lives <= 1)
-                {
-                    speed += new Vector2(2, 2);
-                }
-				targetDirection = UP;
-                charging = true;
-=======
                 if (lives <= 2 && !kamiCharge)
                 {
                     kamiCharge = true;
@@ -148,40 +132,10 @@ namespace Tank_Game
                 {
                     targetDirection = UP;
                 }
->>>>>>> refs/remotes/origin/master
 			}
 			//If X = X of enemy tank and Y < Y of enemy tank, go down.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y < game.tank1.location.Y)
 			{
-<<<<<<< HEAD
-                if (lives <= 1)
-                {
-                    speed += new Vector2(2, 2);
-                }
-                targetDirection = DOWN;
-                charging = true;
-			}
-			//If Y = Y of enemy tank and X > X of enemy tank, go left.
-			if((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X > game.tank1.location.X)
-			{
-                if (lives <= 1)
-                {
-                    speed += new Vector2(2, 2);
-                }
-                targetDirection = LEFT;
-                charging = true;
-			}
-			//If Y = Y of enemy tank and X < X of enemy tank, go right.
-			if ((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X < game.tank1.location.X)
-			{
-                if (lives <= 1)
-                {
-                    speed += new Vector2(2, 2);
-                }
-                targetDirection = RIGHT;
-                charging = true;
-			}
-=======
                 if (lives <= 2 && !kamiCharge)
                 {
                     kamiCharge = true;
@@ -221,9 +175,23 @@ namespace Tank_Game
             }
             if (kamiCharge)
             {
+                if (!chargeSoundPlayed)
+                {
+                    chargeSoundPlayed = true;
+                    game.sound.PlaySound(Sound.Sounds.KAMICHARGE);
+                }
                 speed += new Vector2(3, 3);
             }
->>>>>>> refs/remotes/origin/master
 		}
-	}
+        public override void Die()
+        {
+            base.Die();
+            game.sound.PlaySound(Sound.Sounds.KAMIDEATH);
+        }
+        public override void Hit()
+        {
+            base.Hit();
+            game.sound.PlaySound(Sound.Sounds.KAMIHURT);
+        }
+    }
 }

@@ -69,15 +69,9 @@ namespace Tank_Game
             keyReverse = _keyReverse;
             alive = true;
             lives = 3;
-<<<<<<< HEAD
-            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.LightGray, 0);
-            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.White, 0);
-            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.White, 0);
-=======
             respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
             deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
             hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
->>>>>>> refs/remotes/origin/master
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -95,12 +89,8 @@ namespace Tank_Game
 			}
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
-<<<<<<< HEAD
             if (hitParticles != null)
             {
-=======
-            if (hitParticles != null) {
->>>>>>> refs/remotes/origin/master
                 hitParticles.Draw(spriteBatch);
             }
         }
@@ -330,6 +320,7 @@ namespace Tank_Game
         {
             if (alive)
             {
+                game.sound.PlaySound(Sound.Sounds.LASERSHOOT);
                 if (rotation == UP)
                 {
                     return new Bullet(game, new Rectangle((int)location.X-2, (int)location.Y, 5, 5), new Vector2(0, -20), Color.Red, player, UP, whiteRectangle);
@@ -370,7 +361,7 @@ namespace Tank_Game
             return null;
             
         }
-        public void Hit()
+        public virtual void Hit()
         {
             lives -= 1;
             if(lives <  1)
@@ -380,12 +371,13 @@ namespace Tank_Game
                 hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 2, 5);
             }
         }
-        public void Die()
+        public virtual void Die()
         {
             if (alive)
             {
                 deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Black, 2);
                 alive = false;
+                location = new Vector2(-100, -100);
             }
         }
         public void Respawn(Vector2 _location)
@@ -403,6 +395,7 @@ namespace Tank_Game
 			if(alive)
 			{
 				explosion = new Explosion(location, game, player, whiteRectangle, Color.Firebrick);
+                game.sound.PlaySound(Sound.Sounds.EXPLOSION);
 				Die();
 			}
 		}
