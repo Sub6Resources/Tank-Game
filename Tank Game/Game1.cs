@@ -17,8 +17,6 @@ namespace Tank_Game
         public Tank tank1;
         public Tank tank2;
 		public List<EnemyTank> enemyTanks = new List<EnemyTank>();
-        Explosion tank1Explosion;
-        Explosion tank2Explosion;
         List<Bullet> bullets = new List<Bullet>();
         public Score scoreManager;
         public List<Landmine> landmines = new List<Landmine>();
@@ -37,6 +35,7 @@ namespace Tank_Game
         private float tank2MineDelay = 0f;
         private const float MINE_DELAY = 20f;
         Texture2D background;
+        public Sound sound;
 
 
 
@@ -74,6 +73,7 @@ namespace Tank_Game
             scoreManager = new Score(this, 10);
             debugRect = new Rectangle();
             tank2DebugRect = new Rectangle();
+            sound = new Sound(this);
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -167,14 +167,12 @@ namespace Tank_Game
             if (state.IsKeyDown(Keys.E) && tank1ExplosionDelay <= 0)
             {
                 tank1ExplosionDelay = EXPLOSION_DELAY;
-                tank1Explosion = new Explosion(tank1.location, this, 1, whiteRectangle, Color.Green);
-                tank1.Die();
+                tank1.Explode();
             }
             if (state.IsKeyDown(Keys.Back) && tank2ExplosionDelay <= 0)
             {
                 tank2ExplosionDelay = EXPLOSION_DELAY;
-                tank2Explosion = new Explosion(tank2.location, this, 2, whiteRectangle, Color.Red);
-                tank2.Die();
+                tank2.Explode();
             }
             if(state.IsKeyDown(Keys.V) && tank1MineDelay <= 0)
             {
@@ -192,14 +190,6 @@ namespace Tank_Game
                 {
                     bullet.Update();
                 }
-            }
-            if(tank1Explosion != null)
-            {
-                tank1Explosion.Update();
-            }
-            if(tank2Explosion != null)
-            {
-                tank2Explosion.Update();
             }
             base.Update(gameTime);
         }
@@ -238,14 +228,6 @@ namespace Tank_Game
                 {
                     bullet.Draw(spriteBatch);
                 }
-            }
-            if (tank1Explosion != null)
-            {
-                tank1Explosion.Draw(spriteBatch);
-            }
-            if (tank2Explosion != null)
-            {
-                tank2Explosion.Draw(spriteBatch);
             }
             spriteBatch.End();
 

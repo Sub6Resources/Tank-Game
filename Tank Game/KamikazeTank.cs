@@ -12,6 +12,7 @@ namespace Tank_Game
 		private const int AI_TOLERANCE = 3;
         Vector2 initSpeed = new Vector2();
         public bool kamiCharge;
+        private bool chargeSoundPlayed = false;
 
 		public KamikazeTank() { }
 		public KamikazeTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, float _scale, Texture2D _whiteRectangle)
@@ -174,8 +175,23 @@ namespace Tank_Game
             }
             if (kamiCharge)
             {
+                if (!chargeSoundPlayed)
+                {
+                    chargeSoundPlayed = true;
+                    game.sound.PlaySound(Sound.Sounds.KAMICHARGE);
+                }
                 speed += new Vector2(3, 3);
             }
 		}
-	}
+        public override void Die()
+        {
+            base.Die();
+            game.sound.PlaySound(Sound.Sounds.KAMIDEATH);
+        }
+        public override void Hit()
+        {
+            base.Hit();
+            game.sound.PlaySound(Sound.Sounds.KAMIHURT);
+        }
+    }
 }
