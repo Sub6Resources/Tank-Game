@@ -18,6 +18,7 @@ namespace Tank_Game
         private SoundEffect kamiDeathSound;
         private SoundEffect kamiHurtSound;
         private SoundEffect laserShootSound;
+        public enum Sounds { DERP, DERP2, DERPDEATH, DERPHURT, KAMIANGER, KAMICHARGE, KAMIDEATH, KAMIHURT, LASERSHOOT }
         public Sound(Game1 game) {
             derpSound = game.Content.Load<SoundEffect>("Derp");
             derp2Sound = game.Content.Load<SoundEffect>("Derp2");
@@ -28,6 +29,30 @@ namespace Tank_Game
             kamiDeathSound = game.Content.Load<SoundEffect>("KamiDeath");
             kamiHurtSound = game.Content.Load<SoundEffect>("KamiHurt");
             laserShootSound = game.Content.Load<SoundEffect>("KamiHurt");
+        }
+        public void PlaySound(Sounds sound)
+        {
+            switch(sound)
+            {
+                case Sounds.DERP:
+                    break;
+                case Sounds.DERP2:
+                    break;
+                case Sounds.DERPDEATH:
+                    break;
+                case Sounds.DERPHURT:
+                    break;
+                case Sounds.KAMIANGER:
+                    break;
+                case Sounds.KAMICHARGE:
+                    break;
+                case Sounds.KAMIDEATH:
+                    break;
+                case Sounds.KAMIHURT:
+                    break;
+                case Sounds.LASERSHOOT:
+                    break;
+            }
         }
 
     }
