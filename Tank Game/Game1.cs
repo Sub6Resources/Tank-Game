@@ -37,6 +37,7 @@ namespace Tank_Game
         private float tank2MineDelay = 0f;
         private const float MINE_DELAY = 20f;
         Texture2D background;
+        public Sound sound;
 
 
 
@@ -74,6 +75,7 @@ namespace Tank_Game
             scoreManager = new Score(this, 10);
             debugRect = new Rectangle();
             tank2DebugRect = new Rectangle();
+            sound = new Sound(this);
             // TODO: Add your initialization logic here
             base.Initialize();
         }
@@ -158,11 +160,13 @@ namespace Tank_Game
             {
                 tank1FireDelay = FIRE_DELAY;
                 bullets.Add(tank1.Fire());
+                sound.PlaySound(Sound.Sounds.LASERSHOOT);
             }
             if(state.IsKeyDown(Keys.RightControl) && tank2FireDelay <= 0)
             {
                 tank2FireDelay = FIRE_DELAY;
                 bullets.Add(tank2.Fire());
+                sound.PlaySound(Sound.Sounds.LASERSHOOT);
             }
             if (state.IsKeyDown(Keys.E) && tank1ExplosionDelay <= 0)
             {

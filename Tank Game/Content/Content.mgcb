@@ -104,12 +104,6 @@
 /processorParam:Quality=Best
 /build:Derp2.wav
 
-#begin derpDeath.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:derpDeath.wav
-
 #begin DerpHurt.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -128,12 +122,6 @@
 /processorParam:Quality=Best
 /build:KamiCharge.wav
 
-#begin KamiDeath.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:KamiDeath.wav
-
 #begin KamiHurt.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -145,4 +133,58 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Laser_Shoot.wav
+
+#begin eenewDerpDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:eenewDerpDeath.wav
+
+#begin eenewKamiDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:eenewKamiDeath.wav
+
+#begin Elite1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Elite1.wav
+
+#begin EliteAnger.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:EliteAnger.wav
+
+#begin EliteDeath.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:EliteDeath.wav
+
+#begin EliteHit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:EliteHit.wav
+
+#begin EliteRoar.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:EliteRoar.wav
+
+#begin Explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Explosion.wav
+
+#begin Death2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Death2.wav
 
