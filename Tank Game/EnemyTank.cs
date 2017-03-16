@@ -28,8 +28,8 @@ namespace Tank_Game
 			whiteRectangle = _whiteRectangle;
 			alive = true;
 			lives = 3;
-			respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
-			deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
+			respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
+			deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
 			tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
 			targetDirection = DOWN;
 		}
@@ -67,70 +67,70 @@ namespace Tank_Game
 			//AI CODE---------------------------------------------THIS IS A BASIC AI TANK--------------------------------------------------------------------------------
 			if(colliding)
 			{
-				switch (targetDirection)
+				switch ((int)targetDirection)
 				{
-					case UP:
+					case (int)UP:
 						targetDirection = RIGHT;
 						break;
-					case RIGHT:
+					case (int)RIGHT:
 						targetDirection = DOWN;
 						break;
-					case LEFT:
+					case (int)LEFT:
 						targetDirection = UP;
 						break;
-					case DOWN:
+					case (int)DOWN:
 						targetDirection = LEFT;
 						break;
-					case UP_RIGHT:
-						targetDirection = RIGHT;
-						break;
-					case UP_LEFT:
+					//case (int)UP_RIGHT:
+						//targetDirection = RIGHT;
+						//break;
+					case (int)UP_LEFT:
 						targetDirection = LEFT;
 						break;
-					case DOWN_RIGHT:
-						targetDirection = RIGHT;
-						break;
-					case DOWN_LEFT:
+					//case (int)DOWN_RIGHT:
+						//targetDirection = RIGHT;
+						//break;
+					case (int)DOWN_LEFT:
 						targetDirection = LEFT;
 						break;
 					default:
 						break;
-				}
+				} 
 			}
-			switch(targetDirection)
+            switch ((int)targetDirection)
 			{
-				case UP:
+				case (int)UP:
 					MoveUp(false, false);
 					Rotate(UP);
 					break;
-				case RIGHT:
+				case (int)RIGHT:
 					MoveRight(false, false);
 					Rotate(RIGHT);
 					break;
-				case LEFT:
+				case (int)LEFT:
 					MoveLeft(false, false);
 					Rotate(LEFT);
 					break;
-				case DOWN:
+				case (int)DOWN:
 					MoveDown(false, false);
 					Rotate(DOWN);
 					break;
-				case UP_RIGHT:
-					MoveUp(false, false);
-					MoveRight(false, false);
-					Rotate(UP_RIGHT);
-					break;
-				case UP_LEFT:
+				//case (int)UP_RIGHT:
+					//MoveUp(false, false);
+					//MoveRight(false, false);
+					//Rotate(UP_RIGHT);
+					//break;
+				case (int)UP_LEFT:
 					MoveUp(false, false);
 					MoveLeft(false, false);
 					Rotate(UP_LEFT);
 					break;
-				case DOWN_RIGHT:
-					MoveDown(false, false);
-					MoveRight(false, false);
-					Rotate(DOWN_RIGHT);
-					break;
-				case DOWN_LEFT:
+				//case (int)DOWN_RIGHT:
+					//MoveDown(false, false);
+					//MoveRight(false, false);
+					//Rotate(DOWN_RIGHT);
+					//break;
+				case (int)DOWN_LEFT:
 					MoveDown(false, false);
 					MoveLeft(false, false);
 					Rotate(DOWN_LEFT);
@@ -138,6 +138,6 @@ namespace Tank_Game
 				default:
 					break;
 			}
-		}
+        }
 	}
 }

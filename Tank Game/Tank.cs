@@ -69,9 +69,15 @@ namespace Tank_Game
             keyReverse = _keyReverse;
             alive = true;
             lives = 3;
+<<<<<<< HEAD
             respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.LightGray, 0);
             deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.White, 0);
             hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.White, 0);
+=======
+            respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
+            deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
+            hitParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
+>>>>>>> refs/remotes/origin/master
             tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
         }
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -89,8 +95,12 @@ namespace Tank_Game
 			}
             respawnParticles.Draw(spriteBatch);
             deathParticles.Draw(spriteBatch);
+<<<<<<< HEAD
             if (hitParticles != null)
             {
+=======
+            if (hitParticles != null) {
+>>>>>>> refs/remotes/origin/master
                 hitParticles.Draw(spriteBatch);
             }
         }

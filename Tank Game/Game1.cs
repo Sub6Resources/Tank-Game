@@ -71,7 +71,7 @@ namespace Tank_Game
             tank1 = new Tank(this, "GreenTank", new Vector2(100,100), new Vector2(3, 3), 0, 1, 1f, whiteRectangle, Keys.W, Keys.A, Keys.S, Keys.D, Keys.Tab, Keys.LeftShift);
             tank2 = new Tank(this, "RedTank", new Vector2(map.screenWidth-100, 100), new Vector2(3, 3), MathHelper.Pi, 2, 1f, whiteRectangle, Keys.Up, Keys.Left, Keys.Down, Keys.Right, Keys.Enter, Keys.RightShift);
 			enemyTanks.Add(new EnemyTank(this, "PinkTank", new Vector2(200, 200), new Vector2(5, 5), 0, 10, 1f, whiteRectangle));
-			enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(1, 1), 0, 10, 1f, whiteRectangle));
+			enemyTanks.Add(new KamikazeTank(this, "YellowTank", new Vector2(400, 400), new Vector2(3, 3), 0, 10, 1f, whiteRectangle));
             scoreManager = new Score(this, 10);
             debugRect = new Rectangle();
             tank2DebugRect = new Rectangle();

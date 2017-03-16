@@ -7,7 +7,7 @@ namespace Tank_Game
 {
     public class Explosion
     {
-        public static int MAX_PROJECTILES = 200;
+        public static int MAX_PROJECTILES = 60;
         private Color color;
         private Bullet[] shrapnel = new Bullet[MAX_PROJECTILES];
         public Explosion() { }

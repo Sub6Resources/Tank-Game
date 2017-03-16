@@ -11,7 +11,11 @@ namespace Tank_Game
 	{
 		private const int AI_TOLERANCE = 3;
         Vector2 initSpeed = new Vector2();
+<<<<<<< HEAD
         bool charging;
+=======
+        public bool kamiCharge;
+>>>>>>> refs/remotes/origin/master
 
 		public KamikazeTank() { }
 		public KamikazeTank(Game1 _game, string _tankSpriteName, Vector2 _location, Vector2 _speed, float _rotation, int _player, float _scale, Texture2D _whiteRectangle)
@@ -28,38 +32,128 @@ namespace Tank_Game
 			scale = _scale;
 			whiteRectangle = _whiteRectangle;
 			alive = true;
-			lives = 3;
-			respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Green, 0);
-			deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Red, 0);
+			lives = 4;
+			respawnParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
+			deathParticles = new ParticleSpray(location, game, player, whiteRectangle, Color.Gray, 0);
 			tankRect = new Rectangle((int)location.X - (tankTexture.Width / 2), (int)location.Y - (tankTexture.Height / 2), tankTexture.Width, tankTexture.Height);
 			targetDirection = DOWN;
+            kamiCharge = false;
 		}
 		public override void Move(KeyboardState state)
 		{
-			base.Move(state);
+            if (colliding && !kamiCharge)
+            {
+                switch ((int)targetDirection)
+                {
+                    case (int)UP:
+                        targetDirection = RIGHT;
+                        break;
+                    case (int)RIGHT:
+                        targetDirection = DOWN;
+                        break;
+                    case (int)LEFT:
+                        targetDirection = UP;
+                        break;
+                    case (int)DOWN:
+                        targetDirection = LEFT;
+                        break;
+                    //case (int)UP_RIGHT:
+                    //targetDirection = RIGHT;
+                    //break;
+                    case (int)UP_LEFT:
+                        targetDirection = LEFT;
+                        break;
+                    //case (int)DOWN_RIGHT:
+                    //targetDirection = RIGHT;
+                    //break;
+                    case (int)DOWN_LEFT:
+                        targetDirection = LEFT;
+                        break;
+                    default:
+                        break;
+                }
+            } else if (colliding && kamiCharge)
+            {
+                Explode();
+            } 
+            switch ((int)targetDirection)
+            {
+                case (int)UP:
+                    MoveUp(false, false);
+                    Rotate(UP);
+                    break;
+                case (int)RIGHT:
+                    MoveRight(false, false);
+                    Rotate(RIGHT);
+                    break;
+                case (int)LEFT:
+                    MoveLeft(false, false);
+                    Rotate(LEFT);
+                    break;
+                case (int)DOWN:
+                    MoveDown(false, false);
+                    Rotate(DOWN);
+                    break;
+                //case (int)UP_RIGHT:
+                //MoveUp(false, false);
+                //MoveRight(false, false);
+                //Rotate(UP_RIGHT);
+                //break;
+                case (int)UP_LEFT:
+                    MoveUp(false, false);
+                    MoveLeft(false, false);
+                    Rotate(UP_LEFT);
+                    break;
+                //case (int)DOWN_RIGHT:
+                //MoveDown(false, false);
+                //MoveRight(false, false);
+                //Rotate(DOWN_RIGHT);
+                //break;
+                case (int)DOWN_LEFT:
+                    MoveDown(false, false);
+                    MoveLeft(false, false);
+                    Rotate(DOWN_LEFT);
+                    break;
+                default:
+                    break;
+            }
             speed = initSpeed;
             //If very close to enemy tank, explode 
             if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && (location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE))
 			{
-                if (lives <= 1)
-                {
                     Explode();
+<<<<<<< HEAD
                 }
                 charging = true;
+=======
+>>>>>>> refs/remotes/origin/master
 			}
 			//If X = X of enemy tank and Y > Y of enemy tank, go up.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y > game.tank1.location.Y)
 			{
+<<<<<<< HEAD
                 if (lives <= 1)
                 {
                     speed += new Vector2(2, 2);
                 }
 				targetDirection = UP;
                 charging = true;
+=======
+                if (lives <= 2 && !kamiCharge)
+                {
+                    kamiCharge = true;
+                    targetDirection = UP;
+                }
+                if (!kamiCharge)
+                {
+                    targetDirection = UP;
+                }
+>>>>>>> refs/remotes/origin/master
 			}
 			//If X = X of enemy tank and Y < Y of enemy tank, go down.
 			if ((location.X >= game.tank1.location.X - AI_TOLERANCE && location.X <= game.tank1.location.X + AI_TOLERANCE) && location.Y < game.tank1.location.Y)
 			{
+<<<<<<< HEAD
                 if (lives <= 1)
                 {
                     speed += new Vector2(2, 2);
@@ -87,6 +181,49 @@ namespace Tank_Game
                 targetDirection = RIGHT;
                 charging = true;
 			}
+=======
+                if (lives <= 2 && !kamiCharge)
+                {
+                    kamiCharge = true;
+                    targetDirection = DOWN;
+                }
+                if (!kamiCharge)
+                {
+                    targetDirection = DOWN;
+                }
+            }
+			//If Y = Y of enemy tank and X > X of enemy tank, go left.
+			if((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X > game.tank1.location.X)
+			{
+                if (lives <= 2 && !kamiCharge)
+                {
+                    kamiCharge = true;
+                    targetDirection = LEFT;
+                }
+                if (!kamiCharge)
+                {
+                    targetDirection = LEFT;
+                }
+
+            }
+			//If Y = Y of enemy tank and X < X of enemy tank, go right.
+			if ((location.Y >= game.tank1.location.Y - AI_TOLERANCE && location.Y <= game.tank1.location.Y + AI_TOLERANCE) && location.X < game.tank1.location.X)
+			{
+                if (lives <= 2 && !kamiCharge)
+                {
+                    kamiCharge = true;
+                    targetDirection = RIGHT;
+                }
+                if (!kamiCharge)
+                {
+                    targetDirection = RIGHT;
+                }
+            }
+            if (kamiCharge)
+            {
+                speed += new Vector2(3, 3);
+            }
+>>>>>>> refs/remotes/origin/master
 		}
 	}
 }
